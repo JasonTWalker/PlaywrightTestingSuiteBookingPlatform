@@ -31,3 +31,4 @@ ml/**/*.pyc
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+.env.logins
