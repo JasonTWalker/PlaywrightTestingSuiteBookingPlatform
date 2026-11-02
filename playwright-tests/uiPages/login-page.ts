@@ -55,6 +55,7 @@ export class LoginPage {
     }
 
     async checkLoggedIn() {
+        this.page.waitForURL(/lakeview-bowls/)
         await expect(this.page).toHaveURL(/lakeview-bowls/)
     }
 
