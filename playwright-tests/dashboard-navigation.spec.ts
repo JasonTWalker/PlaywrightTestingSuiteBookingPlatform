@@ -45,8 +45,6 @@ test.describe("Dashboard Navigation Testing ('/') as Unsigned User", {tag: '@smo
         });
     });
 
-    // always fails as there's two non-distinct links to Lakeview Bowls Club, with same href, name, etc.
-    // need to update application with better element targeting
     test('Browse Clubs/Lakeview Bowls Club redirects to Lakeview club page', async ({ page }) => {
         await test.step("'Lakeview Bowls Club' link visible'", async() => {
             await expect(dashboardUnsigned.lakeviewClubLink).toBeVisible();
