@@ -10,7 +10,7 @@ test.beforeEach( async ({page}) => {
     await page.goto('http://localhost:3000/auth/login');
 })
 // smoke test, does login page load - etc.
-test.describe("Login Page Testing ('/auth/login')", () => {
+test.describe("Login Page Testing ('/auth/login')", {tag: '@smoke'}, () => {
     test('User can login with valid credentials', async ({ page }) => {
     
         await test.step('Login page loads', async() => {

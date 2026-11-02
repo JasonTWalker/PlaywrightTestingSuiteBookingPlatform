@@ -10,7 +10,7 @@ test.beforeEach( async ({page}) => {
     await page.goto('http://localhost:3000/');
 })
 // smoke test, does login page load - etc.
-test.describe("Dashboard Navigation Testing ('/') as Unsigned User", () => {
+test.describe("Dashboard Navigation Testing ('/') as Unsigned User", {tag: '@smoke'}, () => {
     test('Dashboard loads', async({page}) => {
             await expect(page.getByRole( "heading", {name: "Club Management Platform"})).toBeVisible();
     });
