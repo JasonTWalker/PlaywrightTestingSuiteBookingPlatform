@@ -1,42 +1,63 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from './uiPages/login-page'
 
-// seed login, member of seeded 'Lakeview' club
-const userEmail = "user@lakeview.club"
-const userPassword = "user123"
-
+// define type of loginPage
+let loginPage: LoginPage;
 
 test.beforeEach( async ({page}) => {
     // goto login page url
     await page.goto('http://localhost:3000/auth/login');
+    loginPage = new LoginPage(page);
+
 })
 // smoke test, does login page load - etc.
 test.describe("Login Page Testing ('/auth/login')", {tag: '@smoke'}, () => {
     test('User can login with valid credentials', async ({ page }) => {
     
         await test.step('Login page loads', async() => {
-            await expect(page.getByRole( "heading", {name: "Sign In"})).toBeVisible();
+            loginPage.checkPageLoaded();
         });
 
         await test.step("Form fields present", async() => {
-            await expect(page.getByPlaceholder("Email")).toBeVisible();
-            await expect(page.getByPlaceholder("Password")).toBeVisible();
+            await expect(loginPage.emailFormField).toBeVisible();
+            await expect(loginPage.passwordFormField).toBeVisible();
         });
 
         await test.step("Sign in button present", async() => {
-            await expect(page.getByRole("button", {name: "Sign In"})).toBeVisible();
+            await expect(loginPage.submitSignInButton).toBeVisible();
         });
 
         await test.step("Fill form fields and sign in", async() => {
-            // .click() first fixes webkit failing
-            await page.getByPlaceholder("Email").click();
-            await page.getByPlaceholder("Email").fill(userEmail);
-            await page.getByPlaceholder("Password").click();
-            await page.getByPlaceholder("Password").fill(userPassword);
-            await page.getByRole("button", {name: "Sign In"}).click();
+            await loginPage.doValidLogin();
         });
 
         await test.step("Redirects to dashboard", async() => {
-            await expect(page).toHaveURL(/lakeview-bowls/)
+            await loginPage.checkLoggedIn();
+        })
+
+    });
+
+    test('User with invalid credentials shown error message', async ({ page }) => {
+    
+        await test.step('Login page loads', async() => {
+            loginPage.checkPageLoaded();
+        });
+
+        await test.step("Form fields present", async() => {
+            await expect(loginPage.emailFormField).toBeVisible();
+            await expect(loginPage.passwordFormField).toBeVisible();
+        });
+
+        await test.step("Sign in button present", async() => {
+            await expect(loginPage.submitSignInButton).toBeVisible();
+        });
+
+        await test.step("Fill form fields with invalid credentials and sign in", async() => {
+            await loginPage.doLogin("test@email.com", "unmatchedPassword");
+        });
+
+        await test.step("Shows invalid credentials message", async() => {
+            await loginPage.checkInvalidCredentials();
         })
 
     });
