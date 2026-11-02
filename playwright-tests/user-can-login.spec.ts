@@ -36,4 +36,29 @@ test.describe("Login Page Testing ('/auth/login')", {tag: '@smoke'}, () => {
         })
 
     });
+
+    test('User with invalid credentials shown error message', async ({ page }) => {
+    
+        await test.step('Login page loads', async() => {
+            loginPage.checkPageLoaded();
+        });
+
+        await test.step("Form fields present", async() => {
+            await expect(loginPage.emailFormField).toBeVisible();
+            await expect(loginPage.passwordFormField).toBeVisible();
+        });
+
+        await test.step("Sign in button present", async() => {
+            await expect(loginPage.submitSignInButton).toBeVisible();
+        });
+
+        await test.step("Fill form fields with invalid credentials and sign in", async() => {
+            await loginPage.doLogin("test@email.com", "unmatchedPassword");
+        });
+
+        await test.step("Shows invalid credentials message", async() => {
+            await loginPage.checkInvalidCredentials();
+        })
+
+    });
 });
