@@ -62,6 +62,8 @@ export class LoginPage {
     // Error message visible on the page.
     async checkInvalidCredentials() {
         await expect(this.page.getByText("Invalid email or password")).toBeVisible();
+        // assert that the page has stayed on the login page
+        await expect(this.page).toHaveURL(/login/)
     }
 
     async doValidLogin() {
