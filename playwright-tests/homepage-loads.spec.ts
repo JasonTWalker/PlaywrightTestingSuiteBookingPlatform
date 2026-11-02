@@ -1,7 +1,7 @@
 // Smoke test to check if the homepage loads successfully
 import { test, expect } from '@playwright/test';
 
-test.describe("Bowls Club App Homepage ('/') Loads", () => {
+test.describe("Bowls Club App Homepage ('/') Loads", {tag: '@smoke'}, () => {
     test('Has title and heading', async ({ page }) => {
         // open bowls application at index (empty url '/')
         await page.goto('http://localhost:3000/');
