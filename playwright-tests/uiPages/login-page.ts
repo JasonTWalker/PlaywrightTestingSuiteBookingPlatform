@@ -2,7 +2,7 @@
 // Will contain locators for different fields, methods for typing within them 
 
 import { expect, type Locator, type Page } from "@playwright/test"
-
+import messages from "../utils/messages"
 
 export class LoginPage {
 
@@ -61,7 +61,7 @@ export class LoginPage {
 
     // Error message visible on the page.
     async checkInvalidCredentials() {
-        await expect(this.page.getByText("Invalid email or password")).toBeVisible();
+        await expect(this.page.getByText(messages.login.invalid)).toBeVisible();
         // assert that the page has stayed on the login page
         await expect(this.page).toHaveURL(/login/)
     }
