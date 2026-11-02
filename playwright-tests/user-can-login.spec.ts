@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from './uiPages/login-page'
 
-const userEmail = process.env.USEREMAIL;
-const userPassword = process.env.USERPASSWORD;
+const userEmail = process.env.CLUBUSEREMAIL;
+const userPassword = process.env.CLUBUSERPASSWORD;
 
 if (!userEmail || !userPassword) {
-    throw new Error('USEREMAIL and USERPASSWORD must be set');
+    throw new Error('CLUBUSEREMAIL and CLUBUSERPASSWORD must be set');
 }
 
 // define type of loginPage
@@ -24,7 +24,7 @@ test.describe("Login Page Testing ('/auth/login')", {tag: '@smoke'}, () => {
     test('User can login with valid credentials', async ({ page }) => {
     
         await test.step('Login page loads', async() => {
-            loginPage.checkPageLoaded();
+            await loginPage.checkPageLoaded();
         });
 
         await test.step("Form fields present", async() => {
@@ -49,7 +49,7 @@ test.describe("Login Page Testing ('/auth/login')", {tag: '@smoke'}, () => {
     test('User with invalid credentials shown error message', async ({ page }) => {
     
         await test.step('Login page loads', async() => {
-            loginPage.checkPageLoaded();
+            await loginPage.checkPageLoaded();
         });
 
         await test.step("Form fields present", async() => {
