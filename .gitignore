@@ -24,3 +24,10 @@ ml/artifacts/*
 ml/**/__pycache__/
 ml/**/*.pyc
 .env.example
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
