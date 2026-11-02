@@ -6,5 +6,5 @@ export default {
     dashboardSigned: '/dashboard',
     lakeviewClubPage: '/lakeview-bowls',
     dashboardSignedNoClub: '/dashboard',
-    dashboardSignedWithLakeviewClub: '/laveview-bowls',
+    dashboardSignedWithLakeviewClub: '/lakeview-bowls',
 }
