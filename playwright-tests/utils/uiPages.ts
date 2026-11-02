@@ -7,4 +7,5 @@ export default {
     lakeviewClubPage: '/lakeview-bowls',
     dashboardSignedNoClub: '/dashboard',
     dashboardSignedWithLakeviewClub: '/lakeview-bowls',
+    joinPage: '/join',
 }
