@@ -32,3 +32,62 @@ For ease of use, some tests have been appropriately tagged so that developers ca
 
 
 </details>
+
+
+<hr>
+
+### POM Objects:
+
+Page references with defined locators. Centralised location to update locators if page layout changes and locators break. Can be chained to form more complex journeys. 
+
+For example: 
+
+```
+let dashboardUnsigned = new DashboardUnsigned(page);
+dashboardUnsigned.clickRegisterLink();
+dashboardUnsigned.checkRegisterRedirect();
+
+// 'page' is now on RegistrationPage
+let registrationPage = new RegistrationPage(dashboardUnsigned.page);
+registrationPage.fillFormFields(email, username, password, club-slug);
+registrationPage.doXXXX...
+
+and so on
+```
+
+<details> <summary> Show Currently Implemented POMS </summary>
+
+
+*N.Y.I: Not Yet Implemented*
+
+
+- LoginPage
+  - Locators:
+    - Header "Sign In" 
+    - "Email" input field
+    - "Password" input field
+    - "Sign In" submit button
+    - "Create account" link N.Y.I
+    - "Forgot password?" link N.Y.I
+  - Methods:
+    - checkPageLoaded()
+    - clickImplementedLocators(ifClickable)
+    - doLogin(email, password)
+    - doValidLogin()
+    - checkLoggedIn()
+    - checkInvalidCredentials(expectedMessage)
+
+- DashboardUnsigned
+  - Locators:
+    - Header "Club Management Platform" 
+    - "Sign In" link
+    - "Register" link
+    - "Add your club" link
+    - "Lakeview-Bowls" link
+    - "View events" link N.Y.I
+  - Methods:
+    - checkPageLoaded()
+    - clickImplementedLocators(ifClickable)
+    - checkRedirects();
+
+</details>
