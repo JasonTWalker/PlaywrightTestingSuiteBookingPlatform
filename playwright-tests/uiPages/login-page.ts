@@ -12,6 +12,7 @@ export class LoginPage {
     readonly submitSignInButton: Locator; 
     readonly emailFormField: Locator;
     readonly passwordFormField: Locator;
+    readonly pageHeader: Locator;
 
     private clubMemberEmail = "user@lakeview.club"
     private clubMemberPassword = "user123"
@@ -22,7 +23,13 @@ export class LoginPage {
         this.submitSignInButton = page.getByRole('button', { name: 'Sign In'})
         this.emailFormField = page.getByPlaceholder("Email")
         this.passwordFormField = page.getByPlaceholder("Password")
+        this.pageHeader = page.getByRole( "heading", {name: "Sign In"});
     }
+
+    async checkPageLoaded() {
+        await expect(this.pageHeader).toBeVisible();
+    }
+
 
     async clickSubmitLogin() {
         await this.submitSignInButton.click();
@@ -54,6 +61,10 @@ export class LoginPage {
     // Error message visible on the page.
     async checkInvalidCredentials() {
         await expect(this.page.getByText("Invalid email or password")).toBeVisible();
+    }
+
+    async doValidLogin() {
+        await this.doLogin(this.clubMemberEmail, this.clubMemberPassword);
     }
 }
 
