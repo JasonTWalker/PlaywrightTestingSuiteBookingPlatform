@@ -1,8 +1,17 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from './uiPages/login-page'
 
+const userEmail = process.env.USEREMAIL;
+const userPassword = process.env.USERPASSWORD;
+
+if (!userEmail || !userPassword) {
+    throw new Error('USEREMAIL and USERPASSWORD must be set');
+}
+
 // define type of loginPage
 let loginPage: LoginPage;
+
+
 
 test.beforeEach( async ({page}) => {
     // goto login page url
@@ -28,7 +37,7 @@ test.describe("Login Page Testing ('/auth/login')", {tag: '@smoke'}, () => {
         });
 
         await test.step("Fill form fields and sign in", async() => {
-            await loginPage.doValidLogin();
+            await loginPage.doLogin(userEmail, userPassword);
         });
 
         await test.step("Redirects to dashboard", async() => {
