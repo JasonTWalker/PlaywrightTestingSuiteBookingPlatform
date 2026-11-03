@@ -3,7 +3,7 @@
 // Will contain locators for different fields, methods for typing within them 
 
 import { expect, type Locator, type Page } from "@playwright/test"
-
+import uiPages from "../utils/uiPages"
 
 export class DashboardUnsigned {
 
@@ -39,7 +39,9 @@ export class DashboardUnsigned {
     // e.g. import login-page then use the checkLoaded method of that page, means chnging how we assert that login-page has loaded
     // updates across the project. 
     async checkSignInRedirect() {
-        await expect(this.page).toHaveURL(/login/)
+        await expect(this.page).toHaveURL(url =>
+            url.pathname === uiPages.loginPage
+        );
         //or:
         // loginPage = new LoginPage(this.page)
         // loginPage.checkLoaded(); ?
@@ -50,8 +52,9 @@ export class DashboardUnsigned {
     }
 
     async checkRegisterRedirect() {
-        await this.page.waitForURL(/register/)
-        await expect(this.page).toHaveURL(/register/);
+        await expect(this.page).toHaveURL(url =>
+            url.pathname === uiPages.registrationPage
+        );
     }
 
     async clickAddClubLink() {
@@ -59,8 +62,9 @@ export class DashboardUnsigned {
     }
 
     async checkAddClubRedirect() {
-        await this.page.waitForURL(/join/)
-        await expect(this.page).toHaveURL(/join/);
+        await expect(this.page).toHaveURL(url =>
+            url.pathname === uiPages.joinPage
+        );
     }
 
     async clickLakeviewClubLink() {
@@ -68,8 +72,9 @@ export class DashboardUnsigned {
     }
 
     async checkLakeviewClubRedirect() {
-        await this.page.waitForURL(/lakeview-bowls/);
-        await expect(this.page).toHaveURL(/lakeview-bowls/);
+        await expect(this.page).toHaveURL(url =>
+            url.pathname === uiPages.lakeviewClubPage
+        );
     }
 
 }
