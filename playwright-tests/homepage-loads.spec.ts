@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 test.describe("Bowls Club App Homepage ('/') Loads", {tag: '@smoke'}, () => {
     test('Has title and heading', async ({ page }) => {
         // open bowls application at index (empty url '/')
-        await page.goto('http://localhost:3000/');
+        await page.goto('/');
         
         await test.step('Homepage has title "Club Management Platform', async () => {
             await expect(page).toHaveTitle("Club Management Platform")
