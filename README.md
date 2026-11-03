@@ -91,3 +91,19 @@ and so on
     - checkRedirects();
 
 </details>
+
+<hr>
+
+### Utils
+
+This testing suite provides a 'utils' folder. This is where information that is to be reused across different tests is to be be stored. This promotes extensibility and flexibility of the testing suite. 
+
+
+Current Utils Scripts:
+- environmentBaseUrls, used in combination with .env.ENV to determine the baseUrl Playwright.config points to.
+- messages, for storing messages that my change in the future and are used in assertions, e.g. messages.login.invalid = "Invalid email or password".
+- uiPages, for storing references to URL suffixes that are appended to baseUrl, e.g. uiPages.loginPage = "/auth/login".
+
+The utils folder is provides helpers, such as data-generators which currently has:
+- valid-email-generator
+  
