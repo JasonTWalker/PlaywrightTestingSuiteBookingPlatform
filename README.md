@@ -101,9 +101,19 @@ This testing suite provides a 'utils' folder. This is where information that is 
 
 Current Utils Scripts:
 - environmentBaseUrls, used in combination with .env.ENV to determine the baseUrl Playwright.config points to.
+   <img width="352" height="132" alt="image" src="https://github.com/user-attachments/assets/2f1365d7-a8e1-41f9-bfd7-0e3c938e0b05" />
+
 - messages, for storing messages that my change in the future and are used in assertions, e.g. messages.login.invalid = "Invalid email or password".
+<img width="598" height="169" alt="image" src="https://github.com/user-attachments/assets/44805ae5-1f6a-40a0-a04b-08b60a432d44" />
+
 - uiPages, for storing references to URL suffixes that are appended to baseUrl, e.g. uiPages.loginPage = "/auth/login".
+<img width="314" height="109" alt="image" src="https://github.com/user-attachments/assets/f3b42d7d-fd19-4443-b29e-af0cabe0950a" />
+
+
+
 
 The utils folder is provides helpers, such as data-generators which currently has:
-- valid-email-generator
+- valid-email-generator, for generating a "unique" valid email address to use for testing registration.
+
+
   
