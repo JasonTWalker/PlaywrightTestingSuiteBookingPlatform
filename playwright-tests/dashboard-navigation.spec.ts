@@ -6,7 +6,7 @@ let dashboardUnsigned: DashboardUnsigned;
 
 test.beforeEach( async ({page}) => {
     // goto login page url
-    await page.goto('http://localhost:3000/');
+    await page.goto('/');
     dashboardUnsigned = new DashboardUnsigned(page);
 })
 // smoke test, does login page load - etc.

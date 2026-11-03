@@ -23,7 +23,6 @@ ml/artifacts/*
 !ml/artifacts/noshow-v1.joblib
 ml/**/__pycache__/
 ml/**/*.pyc
-.env.example
 
 # Playwright
 /test-results/

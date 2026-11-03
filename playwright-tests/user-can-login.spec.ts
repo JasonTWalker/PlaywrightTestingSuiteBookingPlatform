@@ -15,7 +15,7 @@ let loginPage: LoginPage;
 
 test.beforeEach( async ({page}) => {
     // goto login page url
-    await page.goto('http://localhost:3000/auth/login');
+    await page.goto('/auth/login');
     loginPage = new LoginPage(page);
 
 })

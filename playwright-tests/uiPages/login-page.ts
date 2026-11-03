@@ -15,9 +15,6 @@ export class LoginPage {
     readonly passwordFormField: Locator;
     readonly pageHeader: Locator;
 
-    private clubMemberEmail = "user@lakeview.club"
-    private clubMemberPassword = "user123"
-
     // HTML warning that a form field should have an ID or name attribute for ease of finding in testing/accessibility
     constructor (page: Page) {
         this.page = page;
@@ -68,10 +65,6 @@ export class LoginPage {
         await expect(this.page).toHaveURL(url =>
             url.pathname === uiPages.loginPage
         );
-    }
-
-    async doValidLogin() {
-        await this.doLogin(this.clubMemberEmail, this.clubMemberPassword);
     }
 }
 
