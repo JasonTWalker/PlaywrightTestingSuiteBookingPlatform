@@ -6,5 +6,7 @@ export default {
 
     registration: {
         registrationSuccessful: 'Registration successful! Please sign in.',
+        weakPassword: 'Password must be at least 8 characters long and',
+        emptyPassword: 'Please fill in this field',
     },
 }
