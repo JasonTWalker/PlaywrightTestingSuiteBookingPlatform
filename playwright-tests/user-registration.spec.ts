@@ -4,6 +4,7 @@ import uiPages from './utils/uiPages';
 import { generateValidEmail}  from './utils/data-generators/valid-email-generator';
 import { credentials } from './test-data/credentials';
 import messages from './utils/messages';
+import { invalidPasswords } from './test-data/invalid-passwords';
 
 // define type of registrationPage
 let registrationPage: RegistrationPage;
@@ -40,10 +41,24 @@ test.describe("Registration Page Testing ('/auth/login')", () => {
     });
 });
 // smoke test, does login page load - etc.
-test.describe.only("Registration Page Testing ('/auth/login') Weak Passwords Rejected", () => {
+test.describe("Registration Page Testing ('/auth/login') Empty Password Rejected", () => {
     test('Empty passwords are rejected', async({ registrationPageWithEmptyPassword }) => {
         await registrationPageWithEmptyPassword.fillPasswordFormField("")
         await registrationPageWithEmptyPassword.clickSubmitRegistration();
         await expect(registrationPageWithEmptyPassword.page.getByText(messages.registration.emptyPassword)).toBeVisible();
     });
 });
+
+const invalidPasswordEntries = Object.entries(invalidPasswords)
+
+test.describe("Registration Page Testing ('/auth/login') Weak Passwords Rejected", () => {
+for(const [passwordName, password] of invalidPasswordEntries) {
+    test(`Password ${passwordName}: ${password}, to be rejected`, async({registrationPageWithEmptyPassword}) => {
+        await registrationPageWithEmptyPassword.fillPasswordFormField(password);
+        await registrationPageWithEmptyPassword.clickSubmitRegistration();
+        await expect(registrationPageWithEmptyPassword.page.getByText(messages.registration.weakPassword)).toBeVisible();
+        await expect(registrationPageWithEmptyPassword.page).toHaveURL(url =>
+                    url.pathname === uiPages.registrationPage
+            );
+    })
+}});
