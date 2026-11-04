@@ -42,7 +42,7 @@ test.describe("Registration Page Testing ('/auth/login')", () => {
 });
 // Defect - Browser provides different responses
 // Errors provided outside of HTML context through popup
-test.describe.only("Registration Page Testing ('/auth/login') Empty Password Rejected", () => {
+test.describe("Registration Page Testing ('/auth/login') Empty Password Rejected", () => {
     test('Empty passwords are rejected', async({ registrationPageWithEmptyPassword }) => {
         await registrationPageWithEmptyPassword.fillPasswordFormField("")
         await registrationPageWithEmptyPassword.clickSubmitRegistration();
