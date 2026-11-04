@@ -9,4 +9,5 @@ export default {
     dashboardSignedWithLakeviewClub: '/lakeview-bowls',
     landingAdmin: '/dashboard',
     joinPage: '/join',
+    dashboardPage: '/dashboard',
 }
