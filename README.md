@@ -128,14 +128,30 @@ Current Utils Scripts:
 - uiPages, for storing references to URL suffixes that are appended to baseUrl, e.g. uiPages.loginPage = "/auth/login".
 <img width="314" height="109" alt="image" src="https://github.com/user-attachments/assets/f3b42d7d-fd19-4443-b29e-af0cabe0950a" />
 
-- test-data, subdirectory where test-data is to be held. e.g. reusable data across multiple tests
+The utils folder is provides helpers, such as data-generators which currently has:
+- valid-email-generator, for generating a "unique" valid email address to use for testing registration.
+
+<hr>
+
+### Test Data
+
+Consistent data for testing.
+
+Current Test-Data Files:
+- credentials, valid credentials for registration - password should always be valid, as is name and club.
 
 <img width="339" height="125" alt="image" src="https://github.com/user-attachments/assets/6e8e979e-6df9-423b-836e-94f2d69508dd" />
 
+
+- invalid-passwords, a combination of invalid passwords to test against - all should be rejected.
+
 <img width="409" height="231" alt="image" src="https://github.com/user-attachments/assets/9ab0c7c9-afad-404f-97b3-e1e31fb48b72" />
 
-The utils folder is provides helpers, such as data-generators which currently has:
-- valid-email-generator, for generating a "unique" valid email address to use for testing registration.
+- accountTypes, different account types available (non-exhaustive currently) with their expected landing page (redirect after login)
+
+<img width="427" height="338" alt="image" src="https://github.com/user-attachments/assets/14ead2aa-beb9-4754-9bc7-2ea6a2d6bfd0" />
+
+
 
 
 <hr>
