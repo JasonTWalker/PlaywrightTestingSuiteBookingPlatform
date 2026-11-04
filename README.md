@@ -138,4 +138,80 @@ The utils folder is provides helpers, such as data-generators which currently ha
 - valid-email-generator, for generating a "unique" valid email address to use for testing registration.
 
 
+<hr>
+
+## Problems Encountered
+
+In this section I am going to cover issues that arose whilst implementing this testing suite, considerations that have been made, and persistent issues that are proving to be a challenge. 
+
+#### Different Account Types
+
+So far through experimentation I have encountered different account types, these being:
+- Platform Admin
+- Club Admin
+- Club Member
+- NonClubMember (User who isn't part of a club)
+- Non-Signed User (User who isn't logged in)
+
+Each of these account types have different journeys - in the interest of time and what I'm able to cover I have been heavily focusing on Club Members and Non-Signed Users.
+
+Another issue stems from the number of account types, and that's dynamic redirects
+
+Each account type is directed to a different landing page after login.
+- PlatformAdmin -> Redirected to /dashboard
+- ClubAdmin -> Redirected to /dashboard -> Redirected to /lakeview-bowls
+- ClubMember -> Redirected to /dashboard -> Redirected to /lakeview-bowls
+- NonClubMember -> Redirected to /dashboard (bugged)
+
+The dashboard is also different for each, but this is to be expected. For testing, this has been ameliorated somewhat through test-data; define these account types with their credentials and expected landing page after login - and assert against this for navigation. 
   
+```
+export const accountTypes  = {
+    clubMember: {
+        email: process.env.CLUBUSEREMAIL,
+        password: process.env.CLUBUSERPASSWORD,
+        landingPage: uiPages.lakeviewClubPage
+    },
+    clubAdmin: {
+        email: process.env.CLUBADMINEMAIL,
+        password: process.env.CLUBADMINPASSWORD,
+        landingPage: uiPages.lakeviewClubPage
+    },
+
+```
+
+
+
+Though defining a different POM for each Page dependant on the account type that is accessing it seems out of scope for this project - I understand this is also valuable to do, if not quite time-consuming.
+
+
+#### Browser Independent Assertions
+
+This is caused by input fields in HTML having the parameter 'required type', shown below. 
+
+
+<img width="684" height="36" alt="image" src="https://github.com/user-attachments/assets/0a49e2fb-34c9-4c94-ba3f-f4d71acd7f23" />
+
+
+That's all well and good, but each browser handles this differently. 
+
+See Chromium:
+
+
+<img width="413" height="495" alt="image" src="https://github.com/user-attachments/assets/b640e18a-9fd5-4e1d-8fde-5a428a0bb669" />
+
+
+See Webkit:
+
+<img width="443" height="512" alt="image" src="https://github.com/user-attachments/assets/3ae2b11d-79b6-49e3-b7a9-f2ec9c065204" />
+
+See Firefox:
+
+<img width="417" height="484" alt="image" src="https://github.com/user-attachments/assets/991c7729-8ab5-42e0-94a7-412f4080dc9b" />
+
+
+This isn't a direct issue exactly, it's just behaviour that I can't seem to find a consistent way to test against, as the popups are not visible to Playwright (I think, anyways). The workaround for this is to assert that the page hasn't left the registration page. Further assertions should be done, such as verifying no account has been created and a suitable error message has been displayed aside from this popup.
+
+
+
+
