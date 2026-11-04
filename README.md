@@ -28,6 +28,11 @@ For ease of use, some tests have been appropriately tagged so that developers ca
    - Form fields present
    - Sign-in button present
    - Logging in as seeded user redirects to dashboard
+  
+ - User Registration @smoke:
+   - Registration Page loads
+   - Empty password rejected
+   - Weak passwords rejected
 
 
 
@@ -90,6 +95,20 @@ and so on
     - clickImplementedLocators(ifClickable)
     - checkRedirects();
 
+- RegistrationPage
+  - Locators:
+     - Button "Submit Registration"
+     - "Name" input field
+     - "Email" input field
+     - "Password" input field
+     - "Club Slug" input field
+     - Button "Sign In"
+     - Header "Registration"
+  - Methods:
+     - checkPageLoad()
+     - fillFormField()
+     - submitRegistration()
+    
 </details>
 
 <hr>
@@ -109,8 +128,11 @@ Current Utils Scripts:
 - uiPages, for storing references to URL suffixes that are appended to baseUrl, e.g. uiPages.loginPage = "/auth/login".
 <img width="314" height="109" alt="image" src="https://github.com/user-attachments/assets/f3b42d7d-fd19-4443-b29e-af0cabe0950a" />
 
+- test-data, subdirectory where test-data is to be held. e.g. reusable data across multiple tests
 
+<img width="339" height="125" alt="image" src="https://github.com/user-attachments/assets/6e8e979e-6df9-423b-836e-94f2d69508dd" />
 
+<img width="409" height="231" alt="image" src="https://github.com/user-attachments/assets/9ab0c7c9-afad-404f-97b3-e1e31fb48b72" />
 
 The utils folder is provides helpers, such as data-generators which currently has:
 - valid-email-generator, for generating a "unique" valid email address to use for testing registration.
