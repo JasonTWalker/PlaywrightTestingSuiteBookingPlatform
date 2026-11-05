@@ -4,7 +4,7 @@ dotenv.config({ path: fileURLToPath(new URL('./.env', import.meta.url)) });
 import  uiPages  from '../utils/uiPages'
 
 export const accountTypes  = {
-    clubUser: {
+    clubMember: {
         email: process.env.CLUBUSEREMAIL,
         password: process.env.CLUBUSERPASSWORD,
         landingPage: uiPages.lakeviewClubPage

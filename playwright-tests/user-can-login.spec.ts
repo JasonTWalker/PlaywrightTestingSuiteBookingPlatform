@@ -1,12 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from './uiPages/login-page'
+import { accountTypes } from './test-data/account-types';
 
-const userEmail = process.env.CLUBUSEREMAIL;
-const userPassword = process.env.CLUBUSERPASSWORD;
-
-if (!userEmail || !userPassword) {
-    throw new Error('CLUBUSEREMAIL and CLUBUSERPASSWORD must be set');
-}
 
 // define type of loginPage
 let loginPage: LoginPage;
@@ -21,8 +16,16 @@ test.beforeEach( async ({page}) => {
 })
 // smoke test, does login page load - etc.
 test.describe("Login Page Testing ('/auth/login')", {tag: '@smoke'}, () => {
-    test('User can login with valid credentials', async ({ page }) => {
-    
+    test('Club member can login with valid credentials', async ({ page }) => {
+        
+        const clubMemberEmail = accountTypes.clubMember.email;
+        const clubMemberPassword = accountTypes.clubMember.password;
+        const clubMemberLandingPage = accountTypes.clubMember.landingPage;
+
+        if(!clubMemberEmail || !clubMemberPassword || !clubMemberLandingPage) {
+            throw new Error("Club member credentials must be set in your env file");
+        }
+
         await test.step('Login page loads', async() => {
             await loginPage.checkPageLoaded();
         });
@@ -37,13 +40,14 @@ test.describe("Login Page Testing ('/auth/login')", {tag: '@smoke'}, () => {
         });
 
         await test.step("Fill form fields and sign in", async() => {
-            await loginPage.doLogin(userEmail, userPassword);
+            await loginPage.doLogin(clubMemberEmail, clubMemberPassword);
         });
 
-        await test.step("Redirects to dashboard", async() => {
-            await loginPage.checkLoggedIn();
+        await test.step("Redirects to Club Member Landing Page", async() => {
+            await expect(loginPage.page).toHaveURL(url =>
+                url.pathname === clubMemberLandingPage
+            );
         })
-
     });
 
     test('User with invalid credentials shown error message', async ({ page }) => {
