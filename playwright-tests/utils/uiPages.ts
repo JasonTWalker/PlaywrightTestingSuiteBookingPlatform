@@ -11,4 +11,5 @@ export default {
     joinPage: '/join',
     dashboardPage: '/dashboard',
     bookingsPage: '/dashboard/bookings',
+    notificationsPage: '/dashboard/notifications'
 }
