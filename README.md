@@ -108,6 +108,17 @@ and so on
      - checkPageLoad()
      - fillFormField()
      - submitRegistration()
+- DashboardPageCubMember
+  - Locators:
+    - Header "Lakeview Bowls Club' 
+    - "Sign Out" link
+    - "Book Now" link
+    - "View All Notifications" link
+    - "View All Upcoming Bookings" link
+    - NavBar Bookings Link
+    - NavBar Notifications Link
+  - Methods:
+    - checkPageLoaded()
     
 </details>
 
