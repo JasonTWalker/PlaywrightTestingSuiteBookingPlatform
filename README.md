@@ -9,6 +9,7 @@ For ease of use, some tests have been appropriately tagged so that developers ca
 - 'npm run test:smoke' - Runs all tests tagged @smoke, quick sanity check.
 - 'npx playwright test' - Runs all tests within playwright-tests folder. Optional args appended '--headed', '--ui', '--debug'.
 - 'npx playwright test test-to-run' - Runs tests matching argument.
+- 'npm run test:defect' - Runs all known defect tests to verify fixes.
 
 - When running tests through playwright directly, set workers to 1 with optional flag --workers=1, this is due to some tests failing with parallelisation. 
 
@@ -229,22 +230,61 @@ import { test, expect } from './fixtures/registration-fixtures';
 ```
 
 ```
+
 test.describe("Registration Page Testing ('/auth/login') Weak Passwords Rejected", () => {
 for(const [passwordName, password] of invalidPasswordEntries) {
-    test(`Password ${passwordName}: ${password}, to be rejected`, async({registrationPageWithEmptyPassword}) => {
-        await registrationPageWithEmptyPassword.fillPasswordFormField(password);
-        await registrationPageWithEmptyPassword.clickSubmitRegistration();
+    test.fail(`Password ${passwordName}: ${password}, to be rejected`, 
+        {tag: "@defect",
+            annotation: { type: 'defect', description: 'DEF-004 User password validation non-existet'}
+        },
+        async({registrationPageWithEmptyPassword}) => {
+            await registrationPageWithEmptyPassword.fillPasswordFormField(password);
+            await registrationPageWithEmptyPassword.clickSubmitRegistration();
 
-        // weak password error message not currently defined in HTML context, so cannot be checked for visibility
-        // await expect(registrationPageWithEmptyPassword.page.getByText(messages.registration.weakPassword)).toBeVisible();
-        
-        await expect(registrationPageWithEmptyPassword.page).toHaveURL(url =>
-                    url.pathname === uiPages.registrationPage
+            // weak password error message not currently defined in HTML context, so cannot be checked for visibility
+            await expect(registrationPageWithEmptyPassword.page.getByText(messages.registration.weakPassword)).toBeVisible();
+            
+            // even if redirect happens, not a good assertion as before redirect it will still be on registraton page
+            await expect(registrationPageWithEmptyPassword.page).toHaveURL(url =>
+                        url.pathname === uiPages.registrationPage
             );
-    })
+        })
 }});
 ```
 
+
+<hr>
+
+## Known Defect Testing
+
+How to write cases for tests that we know will fail. In this suite the practice will be to append .fail to the known defect test - this way we get 'test passed' in the report, and when it is fixed we will get 'expected to fail, but passed' so that we know the defect has been fixed and the .fail clause can be removed. Hoever - every defect test must have an @defect tag for filtering and tracing, with an annotation pointing to the defect log:
+
+<details> <summary>Show example defect testing</summary>
+
+```
+
+test.describe("Registration Page Testing ('/auth/login') Weak Passwords Rejected", () => {
+for(const [passwordName, password] of invalidPasswordEntries) {
+    test.fail(`Password ${passwordName}: ${password}, to be rejected`, 
+        {tag: "@defect",
+            annotation: { type: 'defect', description: 'DEF-004 User password validation non-existet'}
+        },
+        async({registrationPageWithEmptyPassword}) => {
+            await registrationPageWithEmptyPassword.fillPasswordFormField(password);
+            await registrationPageWithEmptyPassword.clickSubmitRegistration();
+
+            // weak password error message not currently defined in HTML context, so cannot be checked for visibility
+            await expect(registrationPageWithEmptyPassword.page.getByText(messages.registration.weakPassword)).toBeVisible();
+            
+            // even if redirect happens, not a good assertion as before redirect it will still be on registraton page
+            await expect(registrationPageWithEmptyPassword.page).toHaveURL(url =>
+                        url.pathname === uiPages.registrationPage
+            );
+        })
+}});
+```
+
+</details>
 
 <hr>
 
