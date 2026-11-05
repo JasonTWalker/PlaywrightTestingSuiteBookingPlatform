@@ -10,4 +10,5 @@ export default {
     landingAdmin: '/dashboard',
     joinPage: '/join',
     dashboardPage: '/dashboard',
+    bookingsPage: '/dashboard/bookings',
 }
