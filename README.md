@@ -117,7 +117,7 @@ and so on
 
 This testing suite provides a 'utils' folder. This is where information that is to be reused across different tests is to be be stored. This promotes extensibility and flexibility of the testing suite. 
 
-
+<details> <summary> Show Utils Details </summary>
 Current Utils Scripts:
 - environmentBaseUrls, used in combination with .env.ENV to determine the baseUrl Playwright.config points to.
    <img width="352" height="132" alt="image" src="https://github.com/user-attachments/assets/2f1365d7-a8e1-41f9-bfd7-0e3c938e0b05" />
@@ -131,13 +131,17 @@ Current Utils Scripts:
 The utils folder is provides helpers, such as data-generators which currently has:
 - valid-email-generator, for generating a "unique" valid email address to use for testing registration.
 
+
+</details>
 <hr>
 
 ### Test Data
 
 Consistent data for testing.
 
+<details><summary> Show Test Data Details </summary>
 Current Test-Data Files:
+  
 - credentials, valid credentials for registration - password should always be valid, as is name and club.
 
 <img width="339" height="125" alt="image" src="https://github.com/user-attachments/assets/6e8e979e-6df9-423b-836e-94f2d69508dd" />
@@ -151,8 +155,81 @@ Current Test-Data Files:
 
 <img width="427" height="338" alt="image" src="https://github.com/user-attachments/assets/14ead2aa-beb9-4754-9bc7-2ea6a2d6bfd0" />
 
+</details>
 
 
+<hr>
+
+## State Storage
+State storage is essential for speeding up test suite runtimes. Once we've already smoke checked our login journey - we know it's stable. Every time we want to test a user journey for a logged-in account (of which there are many types) we don't want to login through the UI before each test. That's where state storage comes in.
+
+In the Playwright config, you will find a setup script that runs before all tests - this performs the UI login journey once for each account type and stores the session data for reusability where needed. 
+
+```
+  /* Configure projects for major browsers */
+  projects: [
+    { name: 'setup', testMatch: /.*\.setup\.ts/},
+
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'],
+       },
+      dependencies: ['setup'],
+    },
+```
+
+We have the dependency of 'setup' on all our browsers - so it will run before any tests on that browser are conducted - but what does the setup file look like?
+
+For starters, it reads from our accountTypes file - with credentials set from the private ENV.
+
+```
+export const accountTypes  = {
+    clubMember: {
+        email: process.env.CLUBUSEREMAIL,
+        password: process.env.CLUBUSERPASSWORD,
+        landingPage: uiPages.lakeviewClubPage
+    },
+    clubAdmin: {
+        email: process.env.CLUBADMINEMAIL,
+        password: process.env.CLUBADMINPASSWORD,
+        landingPage: uiPages.lakeviewClubPage
+    },
+
+    platformAdmin: {
+        email: process.env.PLATFORMADMINEMAIL,
+        password: process.env.PLATFORMADMINPASSWORD,
+        landingPage: uiPages.landingAdmin
+    },
+}
+```
+
+Then, these account types are iterated over and their session context is stored in an appropriately named .json file. 
+
+```
+let loginPage: LoginPage;
+for (const [role, account] of Object.entries(accountTypes)) {
+  setup(`authenticate ${role}`, async ({ page }) => {
+    if (!account.email || !account.password) {
+      throw new Error(`Credentials for ${role} must be set in your env file`);
+    }
+
+    await page.goto(uiPages.loginPage);
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin(account.email, account.password);
+
+    await page.waitForURL(account.landingPage);
+    await page.context().storageState({ path: path.join(authFile, `${role}.json`) });
+  });
+}
+```
+By default, none of these files are used. Unchanged - tests will run as if they are a fresh user that hasn't logged in. In our ClubMember dashboard navigation test, we need to act as a ClubMember user type:
+
+```
+test.use({ storageState: 'playwright/.auth/clubMember.json' });
+```
+The same would apply if we want to act as platformAdmin, clubAdmin, etc.
+
+NOTE: there is also account type of user who is logged in and is NOT a member of a club. This has not yet been implemented due to an account of this type not beeing in the seeded database.
 
 <hr>
 
