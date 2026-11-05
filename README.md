@@ -10,7 +10,7 @@ For ease of use, some tests have been appropriately tagged so that developers ca
 - 'npx playwright test' - Runs all tests within playwright-tests folder. Optional args appended '--headed', '--ui', '--debug'.
 - 'npx playwright test test-to-run' - Runs tests matching argument.
 
-
+- When running tests through playwright directly, set workers to 1 with optional flag --workers=1, this is due to some tests failing with parallelisation. 
 
 <hr>
 
