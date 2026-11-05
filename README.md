@@ -34,6 +34,11 @@ For ease of use, some tests have been appropriately tagged so that developers ca
    - Empty password rejected
    - Weak passwords rejected
 
+  - Club Member Dashboard
+    - /dashboard redirects to club page
+    - Club member can navigate to bookings
+    - Club member can navigate to notifications
+
 
 
 </details>
