@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test:smoke": "playwright test --grep @smoke",
+    "test:defect": "playwright test --grep @defect",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
