@@ -176,6 +176,78 @@ Current Test-Data Files:
 
 <hr>
 
+## Fixtures !
+Fixtures are reusable setup components that prepare the test environment. In the current iteration of this testing suite, one example fixtures has been created that I will explain here. Fixtures are a way to wrap the {page} object with a POM and perform setup steps. The example used is for password strength validation on the Registration page. As we are testing the password form field, we can autofill the other field with valid credentials - though why don't we do this in beforeEach ? - because we are testing other things within the same spec that don't require this setup.
+
+### Implementation:
+
+Use Inheritance to extend the base 'test' class provided by playwright with our desired fixtures and export this as test, expect.
+
+```
+import { test as base } from "@playwright/test";
+import RegistrationPage from "../uiPages/registration-page";
+import uiPages from "../utils/uiPages";
+import  { credentials } from "../test-data/credentials";
+import {generateValidEmail} from "../utils/data-generators/valid-email-generator"
+
+type RegistrationFixtures = {
+    registrationPage: RegistrationPage;
+    registrationPageWithEmptyPassword: RegistrationPage;
+}
+
+export const test = base.extend<RegistrationFixtures>( {
+    // fills all form fields with valid credentials, leaving password field blank
+    registrationPageWithEmptyPassword: async ({ page }, use) => {
+        await page.goto(uiPages.registrationPage);
+        const registrationPagePom = new RegistrationPage(page);
+
+        // fill form fields
+        await registrationPagePom.fillEmailFormField(generateValidEmail());
+        await registrationPagePom.fillNameFormField(credentials.name);
+        await registrationPagePom.fillClubField(credentials.clubSlug);
+        
+
+
+        await use(registrationPagePom);
+      },
+
+    registrationPage: async({page}, use) => {
+        await page.goto(uiPages.registrationPage);
+        const registrationPagePom = new RegistrationPage(page);
+
+        await use(registrationPagePom);
+    }
+
+});
+
+export {expect} from '@playwright/test'
+```
+
+Now, where we want to use this fixture we import from this fixtures file and use it in plage of async({ page }) in our testing:
+```
+import { test, expect } from './fixtures/registration-fixtures';
+```
+
+```
+test.describe("Registration Page Testing ('/auth/login') Weak Passwords Rejected", () => {
+for(const [passwordName, password] of invalidPasswordEntries) {
+    test(`Password ${passwordName}: ${password}, to be rejected`, async({registrationPageWithEmptyPassword}) => {
+        await registrationPageWithEmptyPassword.fillPasswordFormField(password);
+        await registrationPageWithEmptyPassword.clickSubmitRegistration();
+
+        // weak password error message not currently defined in HTML context, so cannot be checked for visibility
+        // await expect(registrationPageWithEmptyPassword.page.getByText(messages.registration.weakPassword)).toBeVisible();
+        
+        await expect(registrationPageWithEmptyPassword.page).toHaveURL(url =>
+                    url.pathname === uiPages.registrationPage
+            );
+    })
+}});
+```
+
+
+<hr>
+
 ## State Storage
 State storage is essential for speeding up test suite runtimes. Once we've already smoke checked our login journey - we know it's stable. Every time we want to test a user journey for a logged-in account (of which there are many types) we don't want to login through the UI before each test. That's where state storage comes in.
 
