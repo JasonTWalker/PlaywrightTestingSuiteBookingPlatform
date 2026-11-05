@@ -58,7 +58,7 @@ const invalidPasswordEntries = Object.entries(invalidPasswords)
 
 test.describe("Registration Page Testing ('/auth/login') Weak Passwords Rejected", () => {
 for(const [passwordName, password] of invalidPasswordEntries) {
-    test(`Password ${passwordName}: ${password}, to be rejected`, 
+    test.fail(`Password ${passwordName}: ${password}, to be rejected`, 
         {tag: "@defect",
             annotation: { type: 'defect', description: 'DEF-004 User password validation non-existet'}
         },
@@ -67,8 +67,9 @@ for(const [passwordName, password] of invalidPasswordEntries) {
             await registrationPageWithEmptyPassword.clickSubmitRegistration();
 
             // weak password error message not currently defined in HTML context, so cannot be checked for visibility
-            // await expect(registrationPageWithEmptyPassword.page.getByText(messages.registration.weakPassword)).toBeVisible();
+            await expect(registrationPageWithEmptyPassword.page.getByText(messages.registration.weakPassword)).toBeVisible();
             
+            // even if redirect happens, not a good assertion as before redirect it will still be on registraton page
             await expect(registrationPageWithEmptyPassword.page).toHaveURL(url =>
                         url.pathname === uiPages.registrationPage
             );
