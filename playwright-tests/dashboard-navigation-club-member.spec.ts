@@ -36,7 +36,6 @@ test.describe('Dashboard Navigation for Club Member', () => {
             await dashboardPageClubMember.bookNowLink.click();
         });
          await test.step('Club member navigates to bookings page', async() => {
-            await dashboardPageClubMember.page.waitForNavigation
             await expect(dashboardPageClubMember.page).toHaveURL(url => 
                 url.pathname === uiPages.bookingsPage
             );
