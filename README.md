@@ -363,6 +363,14 @@ NOTE: there is also account type of user who is logged in and is NOT a member of
 
 <hr>
 
+## API Testing
+
+API testing offers a faster way to test core logic functionality of the application and improve setup times. Currently API testing in his suite is limited to the bookings journey - with the specifications that club members can request bookings, cancel their bookings (outside of 24h) and CANNOT approve their own bookings. 
+
+
+
+<hr>
+
 ## Problems Encountered
 
 In this section I am going to cover issues that arose whilst implementing this testing suite, considerations that have been made, and persistent issues that are proving to be a challenge. 
