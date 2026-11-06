@@ -12,5 +12,6 @@ export default {
 
     bookings: {
         rinkBookingRequestSuccessful: 'Booking requested for you successfully!',
+        cancellationNotAllowed: 'Cannot cancel bookings within 24 hours of the scheduled date. Contact an admin for assistance.'
     }
 }
