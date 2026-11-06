@@ -136,6 +136,8 @@ This testing suite provides a 'utils' folder. This is where information that is 
 
 <details> <summary> Show Utils Details </summary>
 Current Utils Scripts:
+
+  
 - environmentBaseUrls, used in combination with .env.ENV to determine the baseUrl Playwright.config points to.
    <img width="352" height="132" alt="image" src="https://github.com/user-attachments/assets/2f1365d7-a8e1-41f9-bfd7-0e3c938e0b05" />
 
