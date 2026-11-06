@@ -368,6 +368,105 @@ NOTE: there is also account type of user who is logged in and is NOT a member of
 API testing offers a faster way to test core logic functionality of the application and improve setup times. Currently API testing in his suite is limited to the bookings journey - with the specifications that club members can request bookings, cancel their bookings (outside of 24h) and CANNOT approve their own bookings. 
 
 
+### API Testing Setup
+
+<details> <summary>Setup Details for 'Full' API Testing </summary>
+
+In this context we are impersonating a club member - so don't forget to use stateStorage:
+```
+test.use({ storageState: 'playwright/.auth/clubMember.json' });
+```
+
+Within a test block we use beforeEach to setup the data we're testing. In this case we're testing modifications of booking status, so let's create a booking and store the bookingId to reference later:
+
+```
+ // create a booking for testing purposes through the API
+    test.beforeEach(async ({ request }) => {
+        const currentDate = new Date();
+        const nextMonth = new Date(currentDate);
+        nextMonth.setMonth(currentDate.getMonth() + 1);
+
+        const nextMonthFormatted = nextMonth.toISOString().split('T')[0]; // format as YYYY-MM-DD
+
+
+        // format the expected JSON request
+        const bookingData = (
+            {"date":nextMonthFormatted,"slots":[{"rinkId":"seed-rink-1","timeSlot":"09:00"}]}
+        )
+
+        // send the request
+        const response = await request.post(apiPages.bookings, {
+            data: bookingData
+        })
+        
+        const body = await response.json();
+
+        // expect that the request has gone through
+        expect(response.ok()).toBeTruthy();
+
+        // expect that the response has status of "REQUESTED"
+        expect(body.status).toBe(bookingStatuses.requested);
+
+        // assign bookingId of the response to a variable
+        bookingId = body.id;
+
+```
+An important thing to note is the context async({ request }) instead of the typical { page }, this tells Playwright to use the API context, thre is no browser 'page' to handle.
+
+Now that we have a reference to the bookingId, we can perform PATCH requests on it and see if we get the expected status codes and response messages: 
+
+```
+    test('Club member cannot approve their own booking', async({request}) => {
+        // reminder that our storage state currently has us as a user. 
+            const response = request.patch(apiPages.bookings+`/${bookingId}`, {
+                data: {"status": bookingStatuses.approved}
+            })
+
+            const res = await response;
+
+            expect(res?.status()).toBe(403);
+    });
+```
+
+
+
+</details>
+
+<details><summary> Show Details for API Testing Within UI Testing </summary>
+
+However, what if we are using a page context, and we want to see that a UI action has the expected API response? We can set up a listener within playwright and test against what we expect.
+In our UI user booking journey, we'd expect to see an API POST request with the data and time of the selected rink. 
+
+```
+        await test.step('API POST request sent after requesting booking with expected time slot', async() => {
+            // store the currently selected combobox value,
+            // this is the time slot for the rink booking
+            const selectedValue = await page.getByRole("combobox").inputValue();
+            console.log("Selected value: " + selectedValue);
+
+
+            // wait for the API request to be sent and the response to be received
+            const [request] = await Promise.all([
+                // set up a listener for the API request that is sent when the user clicks the "Request Booking" button
+                page.waitForRequest(request => request.url().includes(apiPages.bookings) && request.method() === 'POST'),
+                page.getByRole("button", {name: "Request Booking"}).click()
+            ]);
+            const response = await request.response();
+
+
+            // response code 201 for CREATED
+            expect(response?.status()).toBe(201);
+
+            // response body json contains expected time slot requested
+            await expect(response?.json()).resolves.toMatchObject({
+                slots: expect.arrayContaining([
+                    expect.objectContaining({ timeSlot: selectedValue }),
+                ]),
+            });
+        });
+```
+
+</details>
 
 <hr>
 
