@@ -30,8 +30,16 @@ test.describe('Booking outside of 24 hours into the future', () => {
 
     // create a booking for testing purposes through the API
     test.beforeEach(async ({ request }) => {
+        const currentDate = new Date();
+        const nextMonth = new Date(currentDate);
+        nextMonth.setMonth(currentDate.getMonth() + 1);
+
+        const nextMonthFormatted = nextMonth.toISOString().split('T')[0]; // format as YYYY-MM-DD
+
+
+
         const bookingData = (
-            {"date":"2026-11-30","slots":[{"rinkId":"seed-rink-1","timeSlot":"09:00"}]}
+            {"date":nextMonthFormatted,"slots":[{"rinkId":"seed-rink-1","timeSlot":"09:00"}]}
         )
     
         const response = await request.post(apiPages.bookings, {
