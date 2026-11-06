@@ -19,7 +19,7 @@ test.beforeEach(async ({page}) => {
 
 
 // these tests assume the rink is in season
-test.describe.only('Club member can request a booking', () => {
+test.describe('Club member can request a booking', () => {
     test('Bookings page loads', {tag: '@smoke'}, async ({ page }) => {
         await expect(page.getByRole("heading", {name: "Bookings", exact: true})).toBeVisible();
     })
