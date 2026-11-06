@@ -33,7 +33,7 @@ For ease of use, some tests have been appropriately tagged so that developers ca
  - User Registration @smoke:
    - Registration Page loads
    - Empty password rejected
-   - Weak passwords rejected
+   - Weak passwords rejected @defect
 
   - Club Member Dashboard
     - /dashboard redirects to club page
