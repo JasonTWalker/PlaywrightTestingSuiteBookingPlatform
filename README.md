@@ -2,6 +2,9 @@
 
 For database installation instructions see forked repository: https://github.com/vascoferraro-scottlogic/Bookingplatform
 
+### Introduction
+
+This project aims to lay the foundations for an extensible Playwright testing suite for the Booking Platform Bowls Application. NPM commands have been provided to aid development timelines, offering one-line approaches to running the testing suite. In this README different implementation approaches have been covered, ranging from what Fixtures are and how to use them, to how to write API tests using Playwright. For writing a new test, read the sections relevant to you. For example - if you wanted to test the admin journey of approving a booking, take a look at State Storage to understand how to authenticate the session as a club admin, then look at the API section in order to learn how determine that the approval was successful.
 
 ### NPM Commands
 For ease of use, some tests have been appropriately tagged so that developers can run them in their CLI to ensure changes haven't broken core functionality.
