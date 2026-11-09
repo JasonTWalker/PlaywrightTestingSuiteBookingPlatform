@@ -11,6 +11,9 @@ This project aims to lay the foundations for an extensible Playwright testing su
 ### Code Styling
 
   - For testing known defects, the format is to use a test.fail() flag, with an @defect tag and an annotation linking to the defect log. See the dedicated #defect-testing section below for examples.
+  - Spec files should follow a naming convention of an expected journey or scope, e.g. club-member-bookings-journey.spec or user-registration.spec.
+  - Use test.describe() to provide a description for multiple similar tests within a block, e.g. describe('Dashboard Navigation Testing') for multiple tests ensuring dashboard links redirect appropriately.
+  - Test using expected user behaviour where appropriate, locators should be appropriately named and visible to the user. 
 
 
 <hr>
