@@ -8,6 +8,13 @@ This project aims to lay the foundations for an extensible Playwright testing su
 
 <hr>
 
+### Code Styling
+
+  - For testing known defects, the format is to use a test.fail() flag, with an @defect tag and an annotation linking to the defect log. See the dedicated #defect-testing section below for examples.
+
+
+<hr>
+
 ### NPM Commands
 For ease of use, some tests have been appropriately tagged so that developers can run them in their CLI to ensure changes haven't broken core functionality.
 
