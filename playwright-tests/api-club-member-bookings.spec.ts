@@ -68,6 +68,11 @@ test.describe('Booking outside of 24 hours into the future', {tag: '@api'}, () =
             const res = await response;
 
             expect(res?.status()).toBe(403);
+
+            test.info().attach('Response JSON', {
+                body: JSON.stringify(await res?.json(), null, 2),
+                contentType: 'application/json',
+            });
     });
 
     test('Club member can cancel their own booking', async({request}) => {
@@ -79,6 +84,12 @@ test.describe('Booking outside of 24 hours into the future', {tag: '@api'}, () =
 
             // 200 status ok !
             expect(res?.status()).toBe(200);
+
+            test.info().attach('Response JSON', {
+                body: JSON.stringify(await res?.json(), null, 2),
+                contentType: 'application/json',
+            });
+
     });
 });
 
@@ -129,6 +140,12 @@ test.describe('Booking within 24 hours', {tag: '@api'}, () => {
             // response json body contains expected error message
             await expect(res?.json()).resolves.toMatchObject({
                 error: messages.bookings.cancellationNotAllowed,
+            });
+
+            // attach reponse body to test info for debugging purposes
+            test.info().attach('Response JSON', {
+                body: JSON.stringify(await res?.json(), null, 2),
+                contentType: 'application/json',
             });
     });
 });

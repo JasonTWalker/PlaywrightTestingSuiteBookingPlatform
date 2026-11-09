@@ -59,6 +59,10 @@ test.describe('Club member can request a booking', () => {
                     expect.objectContaining({ timeSlot: selectedValue }),
                 ]),
             });
+            test.info().attach('Response JSON', {
+                body: JSON.stringify(await response?.json(), null, 2),
+                contentType: 'application/json',
+            });
         });
 
         await test.step('Booking request successful message shown', async() => {
