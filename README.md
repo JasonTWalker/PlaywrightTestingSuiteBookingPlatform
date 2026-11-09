@@ -538,6 +538,12 @@ In our UI user booking journey, we'd expect to see an API POST request with the 
 
 <hr>
 
+## Reporting
+
+At this stage of the implementation, reporting is handled using Playwright's default show-report, which displays the HTML reporting shown in screenshots. In the future it will be worth looking at other reporting types.
+
+<hr>
+
 ## Problems Encountered
 
 In this section I am going to cover issues that arose whilst implementing this testing suite, considerations that have been made, and persistent issues that are proving to be a challenge. 
