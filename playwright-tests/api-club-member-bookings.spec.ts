@@ -25,7 +25,7 @@ test.beforeEach(async ({page}) => {
 
 
 // these tests assume the rink is in season
-test.describe('Booking outside of 24 hours into the future', () => {
+test.describe('Booking outside of 24 hours into the future', {tag: '@api'}, () => {
     let bookingId: string;
 
     // create a booking for testing purposes through the API
@@ -82,7 +82,7 @@ test.describe('Booking outside of 24 hours into the future', () => {
     });
 });
 
-test.describe('Booking within 24 hours', () => {
+test.describe('Booking within 24 hours', {tag: '@api'}, () => {
     let bookingId: string;
 
     // create a booking for testing purposes through the API
