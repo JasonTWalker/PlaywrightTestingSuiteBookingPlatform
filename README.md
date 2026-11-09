@@ -2,6 +2,11 @@
 
 For database installation instructions see forked repository: https://github.com/vascoferraro-scottlogic/Bookingplatform
 
+### Introduction
+
+This project aims to lay the foundations for an extensible Playwright testing suite for the Booking Platform Bowls Application. NPM commands have been provided to aid development timelines, offering one-line approaches to running the testing suite. In this README different implementation approaches have been covered, ranging from what Fixtures are and how to use them, to how to write API tests using Playwright. For writing a new test, read the sections relevant to you. For example - if you wanted to test the admin journey of approving a booking, take a look at State Storage to understand how to authenticate the session as a club admin, then look at the API section in order to learn how determine that the approval was successful.
+
+<hr>
 
 ### NPM Commands
 For ease of use, some tests have been appropriately tagged so that developers can run them in their CLI to ensure changes haven't broken core functionality.
@@ -39,6 +44,16 @@ For ease of use, some tests have been appropriately tagged so that developers ca
     - /dashboard redirects to club page
     - Club member can navigate to bookings
     - Club member can navigate to notifications
+  
+  - Club Member Booking Journey
+     - Booking page loads @smoke
+     - Club member can request a booking (performed entirely through UI, with assertions against expected API responses)
+
+  - Club Member Bookings @api
+     - Similar testing suites for two cases, bookings within 24h current time, bookings outside of this threshold
+     - Club member cannot approve their own booking (done through API, with expectation of Forbidden status code)
+     - Club member can cancel their own booking (if booking outside of 24h window, asserted against status code)
+     - Club member cannot cancel their own booking (if booking is within 24h of current time, asserted against status code and provided error message in response json)
 
 
 
@@ -147,6 +162,10 @@ Current Utils Scripts:
 - uiPages, for storing references to URL suffixes that are appended to baseUrl, e.g. uiPages.loginPage = "/auth/login".
 <img width="314" height="109" alt="image" src="https://github.com/user-attachments/assets/f3b42d7d-fd19-4443-b29e-af0cabe0950a" />
 
+- apiPAges, as above - but for storing references to API call locations.
+<img width="289" height="65" alt="image" src="https://github.com/user-attachments/assets/0055b6cd-5dd3-41ee-9e0a-c49428441ffa" />
+
+
 The utils folder is provides helpers, such as data-generators which currently has:
 - valid-email-generator, for generating a "unique" valid email address to use for testing registration.
 
@@ -173,6 +192,36 @@ Current Test-Data Files:
 - accountTypes, different account types available (non-exhaustive currently) with their expected landing page (redirect after login)
 
 <img width="427" height="338" alt="image" src="https://github.com/user-attachments/assets/14ead2aa-beb9-4754-9bc7-2ea6a2d6bfd0" />
+
+
+
+<details><summary>Show Example Test Using Test-Data</summary>
+
+This test iterates over each 'weak password' provided as above, generating a test case for each. 
+
+```
+test.describe("Registration Page Testing ('/auth/login') Weak Passwords Rejected", () => {
+for(const [passwordName, password] of invalidPasswordEntries) {
+    test.fail(`Password ${passwordName}: ${password}, to be rejected`, 
+        {tag: "@defect",
+            annotation: { type: 'defect', description: 'DEF-004 User password validation non-existet'}
+        },
+        async({registrationPageWithEmptyPassword}) => {
+            await registrationPageWithEmptyPassword.fillPasswordFormField(password);
+            await registrationPageWithEmptyPassword.clickSubmitRegistration();
+
+            // weak password error message not currently defined in HTML context, so cannot be checked for visibility
+            await expect(registrationPageWithEmptyPassword.page.getByText(messages.registration.weakPassword)).toBeVisible();
+            
+            // even if redirect happens, not a good assertion as before redirect it will still be on registraton page
+            await expect(registrationPageWithEmptyPassword.page).toHaveURL(url =>
+                        url.pathname === uiPages.registrationPage
+            );
+        })
+}});
+```
+
+</details>
 
 </details>
 
