@@ -8,6 +8,13 @@ This project aims to lay the foundations for an extensible Playwright testing su
 
 <hr>
 
+### Code Styling
+
+  - For testing known defects, the format is to use a test.fail() flag, with an @defect tag and an annotation linking to the defect log. See the dedicated #defect-testing section below for examples.
+
+
+<hr>
+
 ### NPM Commands
 For ease of use, some tests have been appropriately tagged so that developers can run them in their CLI to ensure changes haven't broken core functionality.
 
@@ -337,6 +344,15 @@ for(const [passwordName, password] of invalidPasswordEntries) {
 
 </details>
 
+To test for known defects, use terminal command 'npm run test:defect', then once those tests have passed use 'npx playwright show-report' for further information. 
+
+<img width="999" height="657" alt="image" src="https://github.com/user-attachments/assets/6d5e4edb-5f1f-4784-a504-409c8d381ae3" />
+
+You can see the tests tagged as defect, and expanding them shows the justification.
+
+<img width="1004" height="681" alt="image" src="https://github.com/user-attachments/assets/3005d403-b3f0-41c0-b05e-e2768e54de05" />
+
+
 <hr>
 
 ## State Storage
@@ -590,6 +606,18 @@ See Firefox:
 
 
 This isn't a direct issue exactly, it's just behaviour that I can't seem to find a consistent way to test against, as the popups are not visible to Playwright (I think, anyways). The workaround for this is to assert that the page hasn't left the registration page. Further assertions should be done, such as verifying no account has been created and a suitable error message has been displayed aside from this popup.
+
+
+
+### Future Considerations
+
+- This project mainly serves as a foundation that is open for extension. Currently, not many user journeys are fully mapped out - edge cases aren't appropriately handled and the full defect log hasn't been implemented.
+- CI/CD not currently implemented, attempted on the final day but with worker runtimes was difficult to debug and get working - managed to get the yml file to execute on a new branch but the test environment wouldn't build correctly.
+- Improvements for running with parallelization - test cases pass when using 1 worker, but runtimes are longer than they could be.
+- More API use cases with different status codes and request types, currently only POST and PATCH are implemented.
+- Appropriate teardown usage, tests rarely use teardown - wasn't sure of a good use case, issues presented with using DELETE API Request.
+- Some beforeEach logic could be moved into fixtures.
+- Further research on Reporters, currently only default HTML reporting is used - could try GitHub reporters for actions. 
 
 
 
