@@ -612,7 +612,12 @@ This isn't a direct issue exactly, it's just behaviour that I can't seem to find
 ### Future Considerations
 
 - This project mainly serves as a foundation that is open for extension. Currently, not many user journeys are fully mapped out - edge cases aren't appropriately handled and the full defect log hasn't been implemented.
-- 
+- CI/CD not currently implemented, attempted on the final day but with worker runtimes was difficult to debug and get working - managed to get the yml file to execute on a new branch but the test environment wouldn't build correctly.
+- Improvements for running with parallelization - test cases pass when using 1 worker, but runtimes are longer than they could be.
+- More API use cases with different status codes and request types, currently only POST and PATCH are implemented.
+- Appropriate teardown usage, tests rarely use teardown - wasn't sure of a good use case, issues presented with using DELETE API Request.
+- Some beforeEach logic could be moved into fixtures.
+- Further research on Reporters, currently only default HTML reporting is used - could try GitHub reporters for actions. 
 
 
 
